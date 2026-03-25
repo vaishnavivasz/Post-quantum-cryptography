@@ -1,0 +1,50 @@
+import random
+import math
+
+# Function to compute gcd
+def gcd(a, b):
+    return math.gcd(a, b)
+
+# Function to find period r
+def find_period(a, N):
+    r = 1
+    while pow(a, r, N) != 1:
+        r += 1
+    return r
+
+def shor(N):
+    # Step 1: pick random a
+    a = random.randint(2, N - 1)
+
+    # Step 2: check gcd
+    g = gcd(a, N)
+    if g > 1:
+        return g
+
+    # Step 3: find period
+    r = find_period(a, N)
+
+    # Step 4: check if r is valid
+    if r % 2 != 0:
+        return None
+
+    # Step 5: compute factors
+    x = pow(a, r // 2, N)
+
+    factor1 = gcd(x - 1, N)
+    factor2 = gcd(x + 1, N)
+
+    if factor1 == 1 or factor2 == 1:
+        return None
+
+    return factor1, factor2
+
+
+# Example
+N = 15
+result = shor(N)
+
+if result:
+    print("Factors:", result)
+else:
+    print("Try again")
